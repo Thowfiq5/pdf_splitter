@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insurance Card Splitter</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Schibsted+Grotesk:wght@600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">PDF tool</div>
+    <h1>Insurance Card Splitter</h1>
+    <p class="lede">Upload one PDF that holds many insurance cards. The tool reads the employee ID on each card and gives you one PDF per card, named with that ID. Everything runs in your browser and the file is not uploaded anywhere.</p>
+  </header>
+
+  <section class="panel" aria-labelledby="h-up">
+    <div class="panel-head"><h2 id="h-up">Your PDF</h2><span class="hint" id="fileinfo"></span></div>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="application/pdf,.pdf">
+      <strong>Choose the PDF or drop it here</strong>
+      <span class="hint">One file with all the insurance cards</span>
+    </label>
+    <div class="example" id="example">
+      <span class="tag">Example output</span>
+      <span class="chip">10234.pdf</span><span class="chip">10235.pdf</span><span class="chip">10236.pdf</span><span class="hint">one file per card</span>
+    </div>
+    <div class="progress" id="progress" hidden><i></i></div>
+    <p class="notice bad" id="loaderr" hidden></p>
+  </section>
+
+  <section class="panel" id="settings" aria-labelledby="h-set" hidden>
+    <div class="panel-head"><h2 id="h-set">How the cards are laid out</h2><span class="hint">Changes apply right away</span></div>
+    <div class="settings">
+      <div class="field">
+        <span id="lbl-grid">Cards on each page</span>
+        <div class="pair" role="group" aria-labelledby="lbl-grid">
+          <input type="number" id="cols" min="1" max="6" value="1" aria-label="Columns">
+          <b>across ×</b>
+          <input type="number" id="rows" min="1" max="8" value="1" aria-label="Rows">
+          <b>down</b>
+        </div>
+      </div>
+      <label class="field"><span>Text printed before the ID</span>
+        <input type="text" id="label" value="Employee ID" spellcheck="false" autocomplete="off">
+      </label>
+      <label class="check"><input type="checkbox" id="merge"><span>Add pages with no ID to the card before them (for card backs)</span></label>
+    </div>
+    <details>
+      <summary>Advanced: match the ID with a pattern</summary>
+      <label class="field"><span>Pattern (regular expression)</span>
+        <input type="text" id="custom" placeholder="e.g. EMP-(\d{5})" spellcheck="false" autocomplete="off">
+        <span class="hint">Used instead of the text above. The first bracketed part becomes the file name.</span>
+      </label>
+    </details>
+  </section>
+
+  <p class="notice" id="scannednote" hidden>No selectable text was found, so this looks like a scanned PDF. IDs cannot be read automatically. Type the ID under each card instead.</p>
+  <p class="notice" id="gridnote" hidden>When several cards share a page, each file shows only its own card, but the rest of the page stays hidden inside the file. Use one card per page if the files go to different people.</p>
+
+  <section id="review" hidden aria-labelledby="h-rev">
+    <div class="summary" style="margin-bottom:14px">
+      <h2 id="h-rev">Check the IDs</h2>
+      <label class="check"><input type="checkbox" id="onlyattn"><span>Show only cards that need attention</span></label>
+    </div>
+    <div class="stats" id="stats" style="margin-bottom:14px"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <div class="bar" id="bar" hidden>
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    <button class="btn" id="zipbtn" type="button">Download all as ZIP</button>
+  </div>
+</div>
+
+<!-- Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<!-- App -->
+<script src="script.js"></script>
+</body>
+</html>
